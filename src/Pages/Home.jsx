@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import "daisyui/dist/full.css"; // Import DaisyUI styles
-import { databases } from "../api/appwriteclient";
+import { databases } from "../appwrite/appwriteclient";
 
 // Replace with your actual database and collection IDs
-const Db_id = "66e553080035fd955160"; // Your database ID
-const COURSE_id = "66e553100032f452d6bc"; // Your Courses collection ID
+const Db_id = import.meta.env.VITE_APPWRITE_DB_ID;
+const COURSE_id = import.meta.env.VITE_APPWRITE_COLLECTION_ID;
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -36,11 +36,11 @@ const Home = () => {
         const newCourse = await databases.createDocument(
           Db_id,
           COURSE_id,
-          "unique()", // ID (auto-generated)
+          "unique()",
           {
-            c_name: newCourseName, // Make sure attribute names match your Appwrite schema
+            c_name: newCourseName,
             c_subject: newCourseSubject,
-            c_notes: [], // Initialize notes as an empty array
+            c_notes: [],
           }
         );
         setCourses([...courses, newCourse]);
@@ -56,35 +56,29 @@ const Home = () => {
     e.preventDefault();
     if (selectedCourseId && newNoteTitle.trim() && newNoteContent.trim()) {
       try {
-        // Find the selected course
         const selectedCourse = courses.find(
           (course) => course.$id === selectedCourseId
         );
 
-        // Ensure that the `notes` array exists (initialize if undefined)
         const notesArray = Array.isArray(selectedCourse.notes)
           ? selectedCourse.notes
           : [];
 
-        // Create the new note as a concatenated string (Title: Content)
         const newNote = `${newNoteTitle}: ${newNoteContent}`;
 
-        // Only send the fields you want to update (c_name, c_subject, notes)
         const updatedFields = {
           c_name: selectedCourse.c_name,
           c_subject: selectedCourse.c_subject,
           c_notes: [...notesArray, newNote], // Append the new note as a string
         };
 
-        // Update the course in Appwrite
         await databases.updateDocument(
-          Db_id, // Database ID
-          COURSE_id, // Collection ID
-          selectedCourseId, // Document ID (course ID)
-          updatedFields // Fields to update
+          Db_id,
+          COURSE_id,
+          selectedCourseId,
+          updatedFields
         );
 
-        // Update local courses state
         const updatedCourses = courses.map((course) =>
           course.$id === selectedCourseId
             ? { ...course, notes: updatedFields.notes }
@@ -92,7 +86,7 @@ const Home = () => {
         );
         setCourses(updatedCourses);
         setNewNoteTitle("");
-        setNewNoteContent(""); // Clear note content
+        setNewNoteContent("");
       } catch (error) {
         console.error("Error adding note:", error);
       }
