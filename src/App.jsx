@@ -1,30 +1,41 @@
 import "./index.css";
+import { useDispatch } from "react-redux";
+import authService from "./appwrite/auth";
+import { login, logout } from "./store/authSlice";
+import { useState, useEffect } from "react";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import { Outlet } from "react-router-dom";
 
 function App() {
-  return (
-    <>
-      <div className="navbar bg-base-100">
-        <div className="flex-1">
-          <a className="btn btn-ghost text-xl">ClassConnect</a>
-        </div>
-        <div className="flex-none">
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <a>Home</a>
-            </li>
-            <li>
-              <a>About</a>
-            </li>
-            <li>
-              <a>Contact</a>
-            </li>
-            <li>
-              <a>Login</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </>
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    authService
+      .getCurrentUser()
+      .then((userData) => {
+        if (userData) {
+          dispatch(login({ userData }));
+        } else {
+          dispatch(logout());
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch user", error);
+        dispatch(logout());
+      })
+      .finally(() => setLoading(false));
+  }, [dispatch]);
+
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
+    <div>
+      <Header />
+      <main>TODO{/* <Outlet /> */}</main>
+      <Footer />
+    </div>
   );
 }
 
