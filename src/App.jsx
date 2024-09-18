@@ -1,10 +1,9 @@
-import "./index.css";
 import { useDispatch } from "react-redux";
 import authService from "./appwrite/auth";
 import { login, logout } from "./store/authSlice";
 import { useState, useEffect } from "react";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
 import { Outlet } from "react-router-dom";
 
 function App() {
@@ -28,12 +27,26 @@ function App() {
       .finally(() => setLoading(false));
   }, [dispatch]);
 
+  // Inline styles for flex layout
+  const appStyles = {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  };
+
+  const mainStyles = {
+    flex: 1,
+  };
+
   return loading ? (
     <div>Loading...</div>
   ) : (
-    <div>
+    <div style={appStyles}>
       <Header />
-      <main>TODO{/* <Outlet /> */}</main>
+      <main style={mainStyles}>
+        TODO
+        {/* <Outlet /> */}
+      </main>
       <Footer />
     </div>
   );
