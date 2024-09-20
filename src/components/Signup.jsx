@@ -73,4 +73,5 @@ const Signup = () => {
   );
 };
 
+export { Signup }; // Named export
 export default Signup;
