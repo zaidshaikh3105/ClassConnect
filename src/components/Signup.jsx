@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../store/authSlice";
 import { Button, InputField } from "../components";
 import { useDispatch } from "react-redux";
-import authservice from "../appwrite/auth";
+import service from "../appwrite/auth";
 import { useForm } from "react-hook-form";
 
 const Signup = () => {
@@ -15,16 +15,16 @@ const Signup = () => {
   const handleSignUp = async (data) => {
     setError("");
     try {
-      const userAccount = await authservice.createAccount(data);
+      const userAccount = await service.createAccount(data); // Assuming authservice.createAccount expects an object
       if (userAccount) {
-        const userData = await authservice.getCurrentUser();
+        const userData = await service.getCurrentUser();
         if (userData) {
           dispatch(login(userData));
           navigate("/");
         }
       }
     } catch (error) {
-      setError(error.message);
+      setError(error?.message || "An error occurred during account creation");
     }
   };
 

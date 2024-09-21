@@ -1,12 +1,10 @@
 import "../../index.css";
-import { useState, useEffect, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Container, LogoutBtn } from "../index";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Container, LogoutBtn } from "../index";
 
-const Header = () => {
+function Header() {
   const authStatus = useSelector((state) => state.auth.status);
-  const navigate = useNavigate();
 
   const navItems = [
     {
@@ -25,33 +23,28 @@ const Header = () => {
       active: !authStatus,
     },
     {
-      name: "All post",
-      slug: "/all-post",
+      name: "All Posts",
+      slug: "/all-posts",
       active: authStatus,
     },
     {
-      name: "Add post",
+      name: "Add Post",
       slug: "/add-post",
       active: authStatus,
     },
   ];
 
   return (
-    <div className="navbar bg-base-100">
+    <header className="">
       <Container>
-        <div className="navbar bg-base-100">
-          <Link to="/" className="btn btn-ghost text-xl">
-            Class Connect
-          </Link>
-        </div>
-        <div className="flex-none">
-          <ul className="menu menu-horizontal px-1">
+        <nav className="flex">
+          <ul className="flex ml-auto space-x-4">
             {navItems.map((item) =>
               item.active ? (
                 <li key={item.name}>
-                  <button onClick={() => navigate(item.slug)} className="btn">
-                    {item.name}
-                  </button>
+                  <Link to={item.slug}>
+                    <button className="">{item.name}</button>
+                  </Link>
                 </li>
               ) : null
             )}
@@ -61,10 +54,10 @@ const Header = () => {
               </li>
             )}
           </ul>
-        </div>
+        </nav>
       </Container>
-    </div>
+    </header>
   );
-};
+}
 
 export default Header;

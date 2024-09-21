@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import authService from "./appwrite/auth";
+import service from "./appwrite/auth";
 import { login, logout } from "./store/authSlice";
 import { useState, useEffect } from "react";
 import Footer from "./components/Footer/Footer";
@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    authService
+    service
       .getCurrentUser()
       .then((userData) => {
         if (userData) {
@@ -38,18 +38,17 @@ function App() {
     flex: 1,
   };
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
-    <div style={appStyles}>
-      <Header />
-      <main style={mainStyles}>
-        TODO
-        {/* <Outlet /> */}
-      </main>
-      <Footer />
+  return !loading ? (
+    <div>
+      <div className="w-full block">
+        <Header />
+        <main>
+          TODO: <Outlet />
+        </main>
+        <Footer />
+      </div>
     </div>
-  );
+  ) : null;
 }
 
 export default App;

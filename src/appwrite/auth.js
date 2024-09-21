@@ -1,4 +1,4 @@
-import { Client, Account, ID } from "appwrite";
+import { Client, Account, ID } from "appwrite"; // Ensure to import ID
 import conf from "../conf/conf";
 
 export class AuthService {
@@ -12,42 +12,58 @@ export class AuthService {
 
   async createAccount({ email, password, name }) {
     try {
+      const userId = ID.unique(); // Generate a unique user ID
+      console.log("Generated User ID:", userId);
       const userAccount = await this.account.create(
-        ID.unique(),
+        userId,
         email,
         password,
         name
       );
       if (userAccount) {
-        return this.login(email, password);
+        return await this.login({ email, password });
       } else {
-        return userAccount;
+        return { success: false, message: "Account creation failed." };
       }
     } catch (error) {
-      throw error;
+      console.error("Error in createAccount:", error); // Log for debugging
+      return {
+        success: false,
+        message: "Failed to create account. Please try again.",
+      };
     }
   }
+
   async login({ email, password }) {
     try {
-      return await this.account.createEmailSession(email, password);
+      const session = await this.account.createSession(email, password);
+      return { success: true, session };
     } catch (error) {
-      throw error;
+      console.error("Error in login:", error); // Log for debugging
+      return {
+        success: false,
+        message: "Failed to log in. Please check your credentials.",
+      };
     }
   }
 
   async getCurrentUser() {
     try {
-      return await this.account.get();
+      const user = await this.account.get();
+      return { success: true, user };
     } catch (error) {
-      throw error;
+      console.error("Error in getCurrentUser:", error); // Log for debugging
+      return { success: false, message: "Failed to get current user." };
     }
-    return null;
   }
+
   async logout() {
     try {
-      return await this.account.deleteSessions();
+      await this.account.deleteSessions();
+      return { success: true, message: "Successfully logged out." };
     } catch (error) {
-      throw error;
+      console.error("Error in logout:", error); // Log for debugging
+      return { success: false, message: "Failed to log out." };
     }
   }
 }

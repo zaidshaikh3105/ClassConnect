@@ -17,7 +17,7 @@ export class Service {
     this.bucket = new Storage(this.client);
   }
 
-  async createNotes({ title, slug, content, image, status, userid }) {
+  async createNotes({ slug, content, image, title, status, userid }) {
     try {
       return await this.databases.createDocument(
         conf.appwriteDb_Id,
@@ -32,7 +32,7 @@ export class Service {
         }
       );
     } catch (error) {
-      console.error("Appwrite error ::: createNotes :::", error); // Changed to console.error for error logging
+      console.log("Appwrite sericve :: createNotes :: error", error);
     }
   }
 
@@ -107,8 +107,8 @@ export class Service {
       return false;
     }
   }
-  // Delete file
 
+  // Delete file
   async deleteFile(fileId) {
     try {
       return await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
@@ -121,7 +121,7 @@ export class Service {
   // Get file preview
   getFilePreview(fileId) {
     try {
-      return this.bucket.getFilePreview(conf.appwriteBucketId, fileId); // Ensure the correct method and parameters
+      return this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
     } catch (error) {
       console.error("Appwrite error ::: getFilePreview :::", error);
       return false;

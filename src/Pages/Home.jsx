@@ -1,41 +1,44 @@
-import { useState, useEffect } from "react";
-import "daisyui/dist/full.css"; // Import DaisyUI styles
+import React, { useEffect, useState } from "react";
 import service from "../appwrite/config";
-import { NotesCard, Container } from "../components/index";
+import { Container, NotesCard } from "../components";
 
-const Home = () => {
-  const [posts, setPosts] = useState([]); // Changed to setPosts for consistency
+function Home() {
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // Fetch all posts
-    service.getAllNotes().then((response) => {
-      if (response) {
-        setPosts(response.documents); // Correctly update state with fetched posts
+    service.getAllNotes().then((posts) => {
+      if (posts) {
+        setPosts(posts.documents);
       }
     });
   }, []);
 
   if (posts.length === 0) {
     return (
-      <Container>
-        <div>
-          <h1>Login to read posts</h1>
-        </div>
-      </Container>
+      <div className="w-full py-8 mt-4 text-center">
+        <Container>
+          <div className="flex flex-wrap">
+            <div className="p-2 w-full">
+              <h1 className="text-2xl font-bold hover:text-gray-500"></h1>
+            </div>
+          </div>
+        </Container>
+      </div>
     );
   }
-
   return (
-    <Container>
-      <div className="flex flex-wrap">
-        {posts.map((post) => (
-          <div key={post.$id} className="p-2">
-            <NotesCard {...post} />
-          </div>
-        ))}
-      </div>
-    </Container>
+    <div className="w-full py-8">
+      <Container>
+        <div className="flex flex-wrap">
+          {posts.map((post) => (
+            <div key={post.$id} className="p-2 w-1/4">
+              <NotesCard {...post} />
+            </div>
+          ))}
+        </div>
+      </Container>
+    </div>
   );
-};
+}
 
 export default Home;

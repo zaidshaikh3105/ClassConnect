@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Button, InputField, RTE, Select } from "../index"; // Assuming you have custom components
-import appwriteService from "../../appwrite/config"; // Appwrite service config
+import { Button, InputField, RTE, Select } from "../index"; // Custom components
+import service from "../../appwrite/config"; // Appwrite service config
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -10,62 +10,59 @@ export default function PostNote({ post }) {
     useForm({
       defaultValues: {
         title: post?.title || "",
-        slug: post?.slug || "", // Use slug or post id if slug is not available
+        slug: post?.$id || "",
         content: post?.content || "",
-        status: post?.status || "active", // Default status to "active"
+        status: post?.status || "active",
       },
     });
 
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.auth.userData); // Fetch user data from Redux
+  const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
-    let file = null;
+    let fileId;
 
-    // Handle image upload logic
     if (data.image && data.image[0]) {
-      file = await appwriteService.uploadFile(data.image[0]);
+      const file = await service.uploadFile(data.image[0]);
+      fileId = file?.$id; // Get the file ID
     }
 
     if (post) {
-      // If post exists, update it
-      if (file) {
-        await appwriteService.deleteFile(post.image); // Delete old image if a new one is uploaded
+      if (fileId) {
+        // Delete old image if there's a new one
+        service.deleteFile(post.image);
       }
 
-      const updatedPost = await appwriteService.updatePost(post.$id, {
+      const dbPost = await service.updateNotes(post.$id, {
         ...data,
-        image: file ? file.$id : post.image, // Use new file id if available, otherwise keep the old one
+        featuredImage: fileId || post.image, // Retain old image if no new one
       });
 
-      if (updatedPost) {
-        navigate(`/post/${updatedPost.$id}`); // Redirect to updated post
+      if (dbPost) {
+        navigate(`/post/${dbPost.$id}`);
       }
     } else {
-      // If post doesn't exist, create a new one
-      if (file) {
-        const fileId = file.$id;
-        data.image = fileId;
-      }
-
-      const newPost = await appwriteService.createPost({
-        ...data,
-        userId: userData.$id, // Include the user ID
+      const dbPost = await service.createNotes({
+        slug: data.slug,
+        content: data.content,
+        image: fileId || "", // Pass the file ID or an empty string
+        title: data.title,
+        status: data.status,
+        userid: userData.$id, // Ensure this is set correctly
       });
 
-      if (newPost) {
-        navigate(`/post/${newPost.$id}`); // Redirect to the new post
+      if (dbPost) {
+        navigate(`/post/${dbPost.$id}`);
       }
     }
   };
 
-  // Slug transformation function
   const slugTransform = useCallback((value) => {
     if (value && typeof value === "string") {
       return value
         .trim()
         .toLowerCase()
-        .replace(/[^a-zA-Z\d\s]+/g, "")
+        .replace(/[^a-zA-Z\d\s]+/g, "-")
         .replace(/\s+/g, "-");
     }
     return "";
@@ -85,13 +82,13 @@ export default function PostNote({ post }) {
     <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
       <div className="w-2/3 px-2">
         <InputField
-          label="Title :"
+          label="Title:"
           placeholder="Title"
           className="mb-4"
           {...register("title", { required: true })}
         />
         <InputField
-          label="Slug :"
+          label="Slug:"
           placeholder="Slug"
           className="mb-4"
           {...register("slug", { required: true })}
@@ -102,7 +99,7 @@ export default function PostNote({ post }) {
           }}
         />
         <RTE
-          label="Content :"
+          label="Content:"
           name="content"
           control={control}
           defaultValue={getValues("content")}
@@ -110,16 +107,16 @@ export default function PostNote({ post }) {
       </div>
       <div className="w-1/3 px-2">
         <InputField
-          label="image Image :"
+          label="Featured Image:"
           type="file"
           className="mb-4"
           accept="image/png, image/jpg, image/jpeg, image/gif"
           {...register("image", { required: !post })}
         />
-        {post && post.image && (
+        {post && (
           <div className="w-full mb-4">
             <img
-              src={appwriteService.getFilePreview(post.image)}
+              src={service.getFilePreview(post.image)}
               alt={post.title}
               className="rounded-lg"
             />
@@ -127,7 +124,7 @@ export default function PostNote({ post }) {
         )}
         <Select
           options={["active", "inactive"]}
-          label="Status :"
+          label="Status"
           className="mb-4"
           {...register("status", { required: true })}
         />

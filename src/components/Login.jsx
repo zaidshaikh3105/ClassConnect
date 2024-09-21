@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../store/authSlice";
 import { Button, InputField } from "../components";
 import { useDispatch } from "react-redux";
-import authservice from "../appwrite/auth";
+import service from "../appwrite/auth";
 import { useForm } from "react-hook-form";
 
 const Login = () => {
@@ -15,16 +15,16 @@ const Login = () => {
   const handleLogin = async (data) => {
     setError("");
     try {
-      const session = await authservice.login(data);
+      const session = await service.login(data); // Assuming authservice.login expects an object
       if (session) {
-        const userData = await authservice.getCurrentUser();
+        const userData = await service.getCurrentUser();
         if (userData) {
           dispatch(login(userData));
           navigate("/");
         }
       }
     } catch (error) {
-      setError(error.message);
+      setError(error?.message || "An error occurred during login");
     }
   };
 
@@ -52,15 +52,11 @@ const Login = () => {
         </div>
         <div className="space-y-5">
           <InputField
-            label="Email"
-            placeholder="Enter Your Email"
-            type="email"
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                message: "Invalid email format",
-              },
+            label="Password"
+            placeholder="Enter Your Password"
+            type="password"
+            {...register("password", {
+              required: "Password is required",
             })}
           />
           <Button type="submit">Sign in</Button>

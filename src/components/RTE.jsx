@@ -11,7 +11,7 @@ export default function RTE({ name, control, label, defaultValue = "" }) {
         defaultValue={defaultValue} // Set default value for react-hook-form
         render={({ field: { onChange, value } }) => (
           <Editor
-            // apiKey="YOUR_TINYMCE_API_KEY" // Optional, if you want to use TinyMCE cloud
+            apiKey="8dz2qa3vu1bczf3qqfnp35ek2we54zovkr8v5igfod8wglcg" // Optional, if you want to use TinyMCE cloud
             value={value} // This binds the editor's value to react-hook-form's state
             onEditorChange={(content) => onChange(content)} // Update react-hook-form's state when editor changes
             init={{

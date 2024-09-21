@@ -10,7 +10,11 @@ const LogoutBtn = () => {
       dispatch(logout());
     });
   };
-  return <button className="btn">Log out</button>;
+  return (
+    <button className="btn" onClick={logOutHandler}>
+      Log out
+    </button>
+  );
 };
 
 export default LogoutBtn;
