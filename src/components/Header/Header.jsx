@@ -1,52 +1,45 @@
 import "../../index.css";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, LogoutBtn } from "../index";
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
+  const navigate = useNavigate();
 
   const navItems = [
-    {
-      name: "Home",
-      slug: "/",
-      active: true,
-    },
-    {
-      name: "Login",
-      slug: "/login",
-      active: !authStatus,
-    },
-    {
-      name: "Signup",
-      slug: "/signup",
-      active: !authStatus,
-    },
-    {
-      name: "All Posts",
-      slug: "/all-posts",
-      active: authStatus,
-    },
-    {
-      name: "Add Post",
-      slug: "/add-post",
-      active: authStatus,
-    },
+    { name: "Home", slug: "/", active: true },
+    { name: "Login", slug: "/login", active: !authStatus },
+    { name: "Signup", slug: "/signup", active: !authStatus },
+    { name: "Notes", slug: "/all-notes", active: authStatus },
+    { name: "Add Notes", slug: "/add-notes", active: authStatus },
   ];
 
   return (
-    <header className="">
-      <Container>
-        <nav className="flex">
-          <ul className="flex ml-auto space-x-4">
-            {navItems.map((item) =>
-              item.active ? (
-                <li key={item.name}>
-                  <Link to={item.slug}>
-                    <button className="">{item.name}</button>
-                  </Link>
-                </li>
-              ) : null
+    <header className="bg-base-100">
+      <nav className="navbar">
+        <div className="flex-1">
+          <button
+            className="btn btn-ghost text-3xl text-white"
+            onClick={() => navigate("/")}
+          >
+            Class Connect
+          </button>
+        </div>
+        <div className="flex-none">
+          <ul className="menu menu-horizontal space-x-4">
+            {navItems.map(
+              (item) =>
+                item.active && (
+                  <li key={item.name}>
+                    <button
+                      className="btn text-white btn-ghost"
+                      onClick={() => navigate(item.slug)}
+                    >
+                      {item.name}
+                    </button>
+                  </li>
+                )
             )}
             {authStatus && (
               <li>
@@ -54,8 +47,8 @@ function Header() {
               </li>
             )}
           </ul>
-        </nav>
-      </Container>
+        </div>
+      </nav>
     </header>
   );
 }

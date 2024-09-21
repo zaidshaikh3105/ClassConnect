@@ -9,13 +9,17 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [error, setError] = useState("");
 
   const handleLogin = async (data) => {
     setError("");
     try {
-      const session = await service.login(data); // Assuming authservice.login expects an object
+      const session = await service.login(data);
       if (session) {
         const userData = await service.getCurrentUser();
         if (userData) {
@@ -29,18 +33,18 @@ const Login = () => {
   };
 
   return (
-    <div>
-      Login
-      <div>
-        <h2>Sign in to your Account</h2>
-      </div>
-      {error && <p className="text-red-600 mt-8">{error}</p>}
-      <form onSubmit={handleSubmit(handleLogin)} className="mt-8">
-        <div className="space-y-5">
+    <div className="flex flex-col items-center justify-center bg-base-500 p-5">
+      <div className="bg-base-100 p-6 rounded-lg shadow-md w-full max-w-sm">
+        <h2 className="text-2xl font-bold text-center mb-4 text-white">
+          Sign in to your Account
+        </h2>
+        {error && <p className="text-red-600 mt-2 text-center">{error}</p>}
+        <form onSubmit={handleSubmit(handleLogin)} className="space-y-5">
           <InputField
             label="Email"
             placeholder="Enter Your Email"
             type="email"
+            className="border-white focus:border-white focus:ring focus:ring-white"
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -49,19 +53,28 @@ const Login = () => {
               },
             })}
           />
-        </div>
-        <div className="space-y-5">
+          {errors.email && (
+            <p className="text-red-600">{errors.email.message}</p>
+          )}
+
           <InputField
             label="Password"
             placeholder="Enter Your Password"
             type="password"
+            className="border-white focus:border-white focus:ring focus:ring-white"
             {...register("password", {
               required: "Password is required",
             })}
           />
-          <Button type="submit">Sign in</Button>
-        </div>
-      </form>
+          {errors.password && (
+            <p className="text-red-600">{errors.password.message}</p>
+          )}
+
+          <Button type="submit" className="text-white mt-4 w-full ">
+            Sign in
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

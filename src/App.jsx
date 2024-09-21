@@ -27,28 +27,23 @@ function App() {
       .finally(() => setLoading(false));
   }, [dispatch]);
 
-  // Inline styles for flex layout
-  const appStyles = {
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh",
-  };
-
-  const mainStyles = {
-    flex: 1,
-  };
-
-  return !loading ? (
-    <div>
-      <div className="w-full block">
-        <Header />
-        <main>
-          TODO: <Outlet />
-        </main>
-        <Footer />
-      </div>
+  return (
+    <div className="min-h-screen flex flex-col">
+      {loading ? (
+        <div className="flex justify-center items-center min-h-screen bg-base-200">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      ) : (
+        <>
+          <Header />
+          <main className="flex-grow">
+            <Outlet />
+          </main>
+          <Footer />
+        </>
+      )}
     </div>
-  ) : null;
+  );
 }
 
 export default App;

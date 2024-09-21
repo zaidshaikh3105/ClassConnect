@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/all-posts",
+        path: "/all-notes",
         element: (
           <AuthLayout authentication>
             <AllPost />
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/add-post",
+        path: "/add-notes",
         element: (
           <AuthLayout authentication>
             <AddPost />

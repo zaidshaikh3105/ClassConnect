@@ -16,27 +16,29 @@ function Home() {
   if (posts.length === 0) {
     return (
       <div className="w-full py-8 mt-4 text-center">
-        <Container>
-          <div className="flex flex-wrap">
-            <div className="p-2 w-full">
-              <h1 className="text-2xl font-bold hover:text-gray-500"></h1>
-            </div>
+        <div className="flex flex-wrap">
+          <div className="p-2 w-full">
+            <h1 className="text-2xl font-bold text-white">
+              No Notes Available
+            </h1>
+            <p className="mt-2 text-lg">
+              It looks like there are no notes to display. Please Login
+            </p>
           </div>
-        </Container>
+        </div>
       </div>
     );
   }
+
   return (
     <div className="w-full py-8">
-      <Container>
-        <div className="flex flex-wrap">
-          {posts.map((post) => (
-            <div key={post.$id} className="p-2 w-1/4">
-              <NotesCard {...post} />
-            </div>
-          ))}
-        </div>
-      </Container>
+      <div className="flex flex-wrap">
+        {posts.map((post) => (
+          <div key={post.$id} className="p-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+            <NotesCard {...post} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
