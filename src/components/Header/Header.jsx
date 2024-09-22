@@ -41,7 +41,7 @@ function Header() {
       <nav className="navbar">
         <div className="flex-1">
           <h1
-            className="btn btn-ghost text-4xl text-white"
+            className="text-4xl text-white font-semibold transition-transform duration-300 hover:scale-105 cursor-pointer"
             //onClick={() => navigate("/")}
           >
             Class Connect

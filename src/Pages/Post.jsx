@@ -23,8 +23,8 @@ export default function Post() {
     } else navigate("/");
   }, [slug, navigate]);
 
-  const deletePost = () => {
-    service.deletePost(note.$id).then((status) => {
+  const deleteNote = () => {
+    service.deleteNotes(note.$id).then((status) => {
       if (status) {
         service.deleteFile(note.image);
         navigate("/");
@@ -51,7 +51,7 @@ export default function Post() {
               </Link>
               <Button
                 className="bg-red-500 hover:bg-red-600"
-                onClick={deletePost}
+                onClick={deleteNote}
               >
                 Delete
               </Button>

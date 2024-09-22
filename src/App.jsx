@@ -40,7 +40,7 @@ function App() {
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow">
         <Header />
-        <main className="flex-grow p-4">
+        <main className="flex-grow p-2">
           <Outlet />
         </main>
       </div>

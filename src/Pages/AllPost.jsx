@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import service from "../appwrite/config";
-import { Container, NotesCard } from "../components/index";
+import { NotesCard } from "../components/index";
 
 function AllPost() {
   const [posts, setPosts] = useState([]);
@@ -15,7 +15,6 @@ function AllPost() {
           setPosts(response.documents);
         } else {
           setError("No posts found.");
-          return;
         }
       } catch (er) {
         setError("Failed to fetch posts. Please try again later.");
@@ -28,30 +27,20 @@ function AllPost() {
   }, []);
 
   return (
-    <div className="w-full py-8">
-      <Container>
-        {loading ? (
-          <p>Loading posts...</p> // Loading state
-        ) : error ? (
-          <p className="text-red-600">{error}</p> // Error state
-        ) : (
-          <div className="flex flex-wrap">
-            {posts.length > 0 ? (
-              posts.map((post) => (
-                <div key={post.$id}>
-                  <NotesCard
-                    $id={post.$id}
-                    title={post.title}
-                    image={post.image}
-                  />
-                </div>
-              ))
-            ) : (
-              <p>No posts available.</p> // Message for no posts
-            )}
-          </div>
-        )}
-      </Container>
+    <div className="w-full py-8 mt-4 text-center">
+      {loading ? (
+        <p className="text-lg">Loading posts...</p> // Loading state
+      ) : error ? (
+        <p className="text-red-600">{error}</p> // Error state
+      ) : posts.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
+          {posts.map((post) => (
+            <NotesCard key={post.$id} {...post} />
+          ))}
+        </div>
+      ) : (
+        <p>No posts available.</p> // Message for no posts
+      )}
     </div>
   );
 }

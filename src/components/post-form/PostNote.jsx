@@ -20,6 +20,13 @@ export default function PostNote({ post }) {
   const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
+    if (!userData) {
+      console.error("User data is not available");
+      return; // or handle the error appropriately
+    }
+
+    console.log("post notes:::", userData);
+
     let fileId;
 
     if (data.image && data.image[0]) {
@@ -28,9 +35,9 @@ export default function PostNote({ post }) {
     }
 
     if (post) {
-      if (fileId) {
+      if (fileId && post.image) {
         // Delete old image if there's a new one
-        service.deleteFile(post.image);
+        await service.deleteFile(post.image);
       }
 
       const dbPost = await service.updateNotes(post.$id, {
@@ -48,7 +55,7 @@ export default function PostNote({ post }) {
         image: fileId || "", // Pass the file ID or an empty string
         title: data.title,
         status: data.status,
-        userid: userData.$id, // Ensure this is set correctly
+        userId: userData.$id, // Ensure this is set correctly
       });
 
       if (dbPost) {

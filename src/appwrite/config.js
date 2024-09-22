@@ -16,10 +16,10 @@ export class Service {
     this.bucket = new Storage(this.client);
   }
 
-  async createNotes({ slug, content, image, title, status, userid }) {
+  async createNotes({ slug, content, image, title, status, userId }) {
     try {
       // Ensure that all required fields are passed and valid
-      if (!slug || !title || !content || !userid) {
+      if (!slug || !title || !content || !userId) {
         throw new Error("Missing required fields");
       }
 
@@ -33,7 +33,7 @@ export class Service {
           content,
           image,
           status,
-          userid,
+          userId,
         }
       );
 
