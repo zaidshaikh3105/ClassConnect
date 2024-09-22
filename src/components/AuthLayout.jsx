@@ -4,27 +4,23 @@ import { useNavigate } from "react-router-dom";
 
 export default function Protected({ children, authentication = true }) {
   const navigate = useNavigate();
-  const [loader, setLoader] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Renamed loader to isLoading for clarity
   const authStatus = useSelector((state) => state.auth.status);
 
   useEffect(() => {
-    //TODO: make it more easy to understand
-
-    // if (authStatus ===true){
-    //     navigate("/")
-    // } else if (authStatus === false) {
-    //     navigate("/login")
-    // }
-
-    //let authValue = authStatus === true ? true : false
-
-    if (authentication && authStatus !== authentication) {
-      navigate("/login");
-    } else if (!authentication && authStatus !== authentication) {
-      navigate("/");
+    // Redirect based on authentication status
+    if (authentication) {
+      if (authStatus !== true) {
+        navigate("/login");
+      }
+    } else {
+      if (authStatus === true) {
+        navigate("/");
+      }
     }
-    setLoader(false);
+    setIsLoading(false);
   }, [authStatus, navigate, authentication]);
 
-  return loader ? <h1>Loading...</h1> : <>{children}</>;
+  // Display loading screen or protected content
+  return isLoading ? <h1>Loading...</h1> : <>{children}</>;
 }

@@ -5,7 +5,6 @@ export class Service {
   client = new Client();
   databases;
   bucket;
-  account;
 
   constructor() {
     this.client
@@ -19,10 +18,16 @@ export class Service {
 
   async createNotes({ slug, content, image, title, status, userid }) {
     try {
-      return await this.databases.createDocument(
-        conf.appwriteDb_Id,
-        conf.appwriteCollectionId,
-        slug,
+      // Ensure that all required fields are passed and valid
+      if (!slug || !title || !content || !userid) {
+        throw new Error("Missing required fields");
+      }
+
+      // Create document in the specified collection
+      const document = await this.databases.createDocument(
+        conf.appwriteDb_Id, // Database ID
+        conf.appwriteCollectionId, // Collection ID
+        slug, // Document ID (unique)
         {
           title,
           content,
@@ -31,8 +36,13 @@ export class Service {
           userid,
         }
       );
+
+      return document; // Return created document
     } catch (error) {
-      console.log("Appwrite sericve :: createNotes :: error", error);
+      console.error(
+        "Appwrite service :: createNotes :: error",
+        error.message || error
+      );
     }
   }
 

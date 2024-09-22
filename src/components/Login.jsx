@@ -1,34 +1,33 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../store/authSlice";
+import { login as authLogin } from "../store/authSlice";
 import { Button, InputField } from "../components";
 import { useDispatch } from "react-redux";
-import service from "../appwrite/auth";
+import authService from "../appwrite/auth";
 import { useForm } from "react-hook-form";
 
-const Login = () => {
+function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm(); // Extract errors from formState
   const [error, setError] = useState("");
 
   const handleLogin = async (data) => {
     setError("");
     try {
-      const session = await service.login(data);
+      const session = await authService.login(data);
       if (session) {
-        const userData = await service.getCurrentUser();
-        if (userData) {
-          dispatch(login(userData));
-          navigate("/");
-        }
+        const userData = await authService.getCurrentUser(); // Fetch user data
+        if (userData) dispatch(authLogin(userData));
+        navigate("/");
       }
     } catch (error) {
-      setError(error?.message || "An error occurred during login");
+      setError(error.message);
+      console.error("Login error:", error);
     }
   };
 
@@ -55,8 +54,8 @@ const Login = () => {
           />
           {errors.email && (
             <p className="text-red-600">{errors.email.message}</p>
-          )}
-
+          )}{" "}
+          {/* Adjusted for error display */}
           <InputField
             label="Password"
             placeholder="Enter Your Password"
@@ -68,8 +67,8 @@ const Login = () => {
           />
           {errors.password && (
             <p className="text-red-600">{errors.password.message}</p>
-          )}
-
+          )}{" "}
+          {/* Adjusted for error display */}
           <Button type="submit" className="text-white mt-4 w-full ">
             Sign in
           </Button>
@@ -77,6 +76,6 @@ const Login = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Login;

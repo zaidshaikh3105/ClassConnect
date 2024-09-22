@@ -3,6 +3,7 @@ import conf from "../conf/conf";
 
 export class AuthService {
   client = new Client();
+  account;
 
   constructor() {
     this.client.setEndpoint(conf.appwriteUrl);
@@ -12,49 +13,43 @@ export class AuthService {
 
   async createAccount({ email, password, name }) {
     try {
-      const userId = ID.unique(); // Generate a unique user ID
-      console.log("Generated User ID:", userId);
       const userAccount = await this.account.create(
-        userId,
+        ID.unique(),
         email,
         password,
         name
       );
       if (userAccount) {
-        return await this.login({ email, password });
+        // call another method
+        return this.login({ email, password });
       } else {
-        return { success: false, message: "Account creation failed." };
+        return userAccount;
       }
     } catch (error) {
-      console.error("Error in createAccount:", error); // Log for debugging
-      return {
-        success: false,
-        message: "Failed to create account. Please try again.",
-      };
+      throw error;
     }
   }
 
   async login({ email, password }) {
     try {
-      const session = await this.account.createSession(email, password);
-      return { success: true, session };
+      const session = await this.account.createEmailPasswordSession(
+        email,
+        password
+      );
+      console.log(session);
     } catch (error) {
-      console.error("Error in login:", error); // Log for debugging
-      return {
-        success: false,
-        message: "Failed to log in. Please check your credentials.",
-      };
+      throw error;
     }
   }
 
   async getCurrentUser() {
     try {
-      const user = await this.account.get();
-      return { success: true, user };
+      return await this.account.get();
     } catch (error) {
-      console.error("Error in getCurrentUser:", error); // Log for debugging
-      return { success: false, message: "Failed to get current user." };
+      console.log("Appwrite serive :: getCurrentUser :: error", error);
     }
+
+    return null;
   }
 
   async logout() {

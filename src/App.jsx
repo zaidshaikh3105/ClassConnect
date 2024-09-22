@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import service from "./appwrite/auth";
+import service from "./appwrite/auth"; // Authentication service for Appwrite
 import { login, logout } from "./store/authSlice";
 import { useState, useEffect } from "react";
 import Footer from "./components/Footer/Footer";
@@ -8,6 +8,7 @@ import { Outlet } from "react-router-dom";
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // For handling errors
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,35 +16,43 @@ function App() {
       .getCurrentUser()
       .then((userData) => {
         if (userData) {
-          dispatch(login({ userData }));
+          dispatch(login({ userData })); // Ensure userData matches the shape expected by your authSlice
         } else {
           dispatch(logout());
         }
       })
-      .catch((error) => {
-        console.error("Failed to fetch user", error);
-        dispatch(logout());
+      .catch((err) => {
+        console.error("Error fetching current user:", err);
+        setError("Failed to fetch user data.");
       })
       .finally(() => setLoading(false));
   }, [dispatch]);
 
-  return (
+  // Display an error message if there's an error fetching user data
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-base-200">
+        <p className="text-red-600 text-lg">{error}</p>
+      </div>
+    );
+  }
+
+  return !loading ? (
     <div className="min-h-screen flex flex-col">
-      {loading ? (
-        <div className="flex justify-center items-center min-h-screen bg-base-200">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      ) : (
-        <>
-          <Header />
-          <main className="flex-grow">
-            <Outlet />
-          </main>
-          <Footer />
-        </>
-      )}
+      <div className="w-full flex-grow">
+        <Header />
+        <main className="flex-grow">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
     </div>
-  );
+  ) : null;
+  //(
+  //   <div className="flex justify-center items-center min-h-screen bg-base-200">
+  //     <span className="loading loading-spinner loading-lg"></span>
+  //   </div>
+  // );
 }
 
 export default App;
