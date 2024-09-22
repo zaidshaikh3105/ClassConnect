@@ -8,7 +8,7 @@ const LogoutBtn = () => {
   const [isLoading, setIsLoading] = useState(false); // New loading state
 
   const logOutHandler = async () => {
-    setIsLoading(true); // Set loading to true when logout begins
+    setIsLoading(true);
     try {
       await authService.logout();
       dispatch(logout());

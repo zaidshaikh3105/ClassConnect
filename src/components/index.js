@@ -8,7 +8,6 @@ import Signup from "./Signup";
 import Login from "./Login";
 import PostNote from "./post-form/PostNote";
 import NotesCard from "./NotesCard/NotesCard";
-import Protected from "./AuthLayout";
 import Button from "./Button";
 import Select from "./Select.jsx";
 import AuthLayout from "./AuthLayout";

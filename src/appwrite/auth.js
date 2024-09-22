@@ -1,13 +1,11 @@
-import { Client, Account, ID } from "appwrite"; // Ensure to import ID
+import { Client, Account, ID } from "appwrite";
 import conf from "../conf/conf";
 
 export class AuthService {
-  client = new Client();
-  account;
-
   constructor() {
-    this.client.setEndpoint(conf.appwriteUrl);
-    this.client.setProject(conf.appwriteProjectId);
+    this.client = new Client()
+      .setEndpoint(conf.appwriteUrl)
+      .setProject(conf.appwriteProjectId);
     this.account = new Account(this.client);
   }
 
@@ -19,14 +17,10 @@ export class AuthService {
         password,
         name
       );
-      if (userAccount) {
-        // call another method
-        return this.login({ email, password });
-      } else {
-        return userAccount;
-      }
+      return userAccount ? this.login({ email, password }) : userAccount;
     } catch (error) {
-      throw error;
+      console.error("Error creating account:", error);
+      throw new Error("Account creation failed");
     }
   }
 
@@ -36,9 +30,11 @@ export class AuthService {
         email,
         password
       );
-      console.log(session);
+      console.log("Login successful:", session);
+      return session;
     } catch (error) {
-      throw error;
+      console.error("Login error:", error);
+      throw new Error("Login failed");
     }
   }
 
@@ -46,10 +42,9 @@ export class AuthService {
     try {
       return await this.account.get();
     } catch (error) {
-      console.log("Appwrite serive :: getCurrentUser :: error", error);
+      console.error("Error fetching current user:", error);
+      return null;
     }
-
-    return null;
   }
 
   async logout() {
@@ -57,7 +52,7 @@ export class AuthService {
       await this.account.deleteSessions();
       return { success: true, message: "Successfully logged out." };
     } catch (error) {
-      console.error("Error in logout:", error); // Log for debugging
+      console.error("Logout error:", error);
       return { success: false, message: "Failed to log out." };
     }
   }

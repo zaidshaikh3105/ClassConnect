@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import service from "../appwrite/config";
-import { Container, NotesCard } from "../components";
+import { NotesCard } from "../components/index";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -22,7 +22,7 @@ function Home() {
               No Notes Available
             </h1>
             <p className="mt-2 text-lg">
-              It looks like there are no notes to display. Please Login
+              It looks like there are no notes to display.
             </p>
           </div>
         </div>

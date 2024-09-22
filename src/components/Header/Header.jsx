@@ -12,7 +12,7 @@ function Header() {
     {
       name: "Home",
       slug: "/",
-      active: true,
+      active: authStatus,
     },
     {
       name: "Login",
@@ -40,18 +40,17 @@ function Header() {
     <header className="bg-base-100">
       <nav className="navbar">
         <div className="flex-1">
-          <button
-            className="btn btn-ghost text-3xl text-white"
-            onClick={() => navigate("/")}
+          <h1
+            className="btn btn-ghost text-4xl text-white"
+            //onClick={() => navigate("/")}
           >
             Class Connect
-          </button>
+          </h1>
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal space-x-4">
-            {navItems
-              .filter((item) => item.active)
-              .map((item) => (
+            {navItems.map((item) =>
+              item.active ? (
                 <li key={item.name}>
                   <button
                     className={`btn btn-ghost text-white ${
@@ -62,7 +61,8 @@ function Header() {
                     {item.name}
                   </button>
                 </li>
-              ))}
+              ) : null
+            )}
             {authStatus && (
               <li>
                 <LogoutBtn />

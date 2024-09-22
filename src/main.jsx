@@ -5,14 +5,14 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import Home from "./Pages/Home.jsx";
 import store from "./store/store.js";
-import AuthLayout from "./components/AuthLayout";
+import { AuthLayout } from "./components/index.js";
 
 import AddPost from "./pages/AddPost";
 import Signup from "./pages/Signup";
-import Login from "./pages/Login";
 import EditForm from "./pages/EditForm";
 import Post from "./pages/Post";
 import AllPost from "./pages/AllPost";
+import Login from "./pages/Login.jsx";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +61,6 @@ const router = createBrowserRouter([
         path: "/edit-post/:slug",
         element: (
           <AuthLayout authentication>
-            {" "}
             <EditForm />
           </AuthLayout>
         ),

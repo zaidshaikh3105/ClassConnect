@@ -28,7 +28,6 @@ function App() {
       .finally(() => setLoading(false));
   }, [dispatch]);
 
-  // Display an error message if there's an error fetching user data
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-base-200">
@@ -39,20 +38,20 @@ function App() {
 
   return !loading ? (
     <div className="min-h-screen flex flex-col">
-      <div className="w-full flex-grow">
+      <div className="flex-grow">
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow p-4">
           <Outlet />
         </main>
-        <Footer />
       </div>
+
+      <Footer className="mt-auto" />
     </div>
-  ) : null;
-  //(
-  //   <div className="flex justify-center items-center min-h-screen bg-base-200">
-  //     <span className="loading loading-spinner loading-lg"></span>
-  //   </div>
-  // );
+  ) : (
+    <div className="flex justify-center items-center min-h-screen bg-base-200">
+      <span className="loading loading-spinner loading-lg"></span>
+    </div>
+  );
 }
 
 export default App;
