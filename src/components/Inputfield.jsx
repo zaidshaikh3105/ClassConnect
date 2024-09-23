@@ -15,7 +15,7 @@ const InputField = forwardRef(function InputField(
       )}
       <input
         type={type}
-        className={`input input-bordered w-full ${className} text-white`}
+        className={`input input-bordered w-full bg-transparent text-white border border-white  focus:ring ${className}`}
         ref={ref}
         {...props}
         id={id}

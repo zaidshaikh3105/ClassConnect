@@ -18,7 +18,7 @@ export default function Protected({ children, authentication = true }) {
       }
     } else {
       if (authStatus === true) {
-        navigate("/");
+        navigate("/home");
       } else {
         setIsLoading(false); // Only stop loading if the user is not authenticated
       }

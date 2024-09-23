@@ -19,8 +19,20 @@ export class AuthService {
       );
       return userAccount ? this.login({ email, password }) : userAccount;
     } catch (error) {
-      console.error("Error creating account:", error);
-      throw new Error("Account creation failed");
+      // Log the entire error object
+      console.error("Login error:", error);
+
+      // Create a more detailed error message
+      let errorMessage = "Login failed. Please try again.";
+      const errorCode = error.code || "Unknown code"; // Default if code is missing
+      const errorType = error.type || "Unknown type"; // Default if type is missing
+
+      if (error && typeof error === "object" && error.message) {
+        errorMessage = error.message; // Use the specific message if available
+      }
+
+      // Throw an object that includes the message and other properties
+      throw { message: errorMessage, code: errorCode, type: errorType };
     }
   }
 
@@ -33,11 +45,22 @@ export class AuthService {
       console.log("Login successful:", session);
       return session;
     } catch (error) {
+      // Log the entire error object
       console.error("Login error:", error);
-      throw new Error("Login failed");
+
+      // Create a more detailed error message
+      let errorMessage = "Login failed. Please try again.";
+      const errorCode = error.code || "Unknown code"; // Default if code is missing
+      const errorType = error.type || "Unknown type"; // Default if type is missing
+
+      if (error && typeof error === "object" && error.message) {
+        errorMessage = error.message; // Use the specific message if available
+      }
+
+      // Throw an object that includes the message and other properties
+      throw { message: errorMessage, code: errorCode, type: errorType };
     }
   }
-
   async getCurrentUser() {
     try {
       return await this.account.get();

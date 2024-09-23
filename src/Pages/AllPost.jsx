@@ -29,9 +29,13 @@ function AllPost() {
   return (
     <div className="w-full py-8 mt-4 text-center">
       {loading ? (
-        <p className="text-lg">Loading posts...</p> // Loading state
+        <div className="w-full py-8 mt-4 text-center">
+          <div className="flex justify-center items-center">
+            <span className="loading loading-spinner loading-lg"></span>
+          </div>
+        </div>
       ) : error ? (
-        <p className="text-red-600">{error}</p> // Error state
+        <p className="text-red-600">{error}</p>
       ) : posts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
           {posts.map((post) => (
@@ -39,7 +43,7 @@ function AllPost() {
           ))}
         </div>
       ) : (
-        <p>No posts available.</p> // Message for no posts
+        <p>No posts available.</p>
       )}
     </div>
   );

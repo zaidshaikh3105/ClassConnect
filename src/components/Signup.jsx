@@ -15,20 +15,27 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (data) => {
     setError("");
+    setLoading(true);
+
     try {
       const userAccount = await service.createAccount(data);
       if (userAccount) {
         const userData = await service.getCurrentUser();
         if (userData) {
           dispatch(login(userData));
-          navigate("/");
+          navigate("/home");
         }
       }
     } catch (error) {
-      setError(error?.message || "An error occurred during account creation");
+      console.error("Signup error:", error);
+
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,7 +45,7 @@ const Signup = () => {
         <h2 className="text-2xl font-bold text-center mb-4 text-white">
           Sign up
         </h2>
-        {error && <p className="text-red-600 mt-2 text-center">{error}</p>}
+        {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
         <form onSubmit={handleSubmit(handleSignUp)} className="space-y-5">
           <InputField
             label="Name"
@@ -49,7 +56,7 @@ const Signup = () => {
               required: "Name is required",
             })}
           />
-          {errors.name && <p className="text-red-600">{errors.name.message}</p>}
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
           <InputField
             label="Email"
@@ -65,7 +72,7 @@ const Signup = () => {
             })}
           />
           {errors.email && (
-            <p className="text-red-600">{errors.email.message}</p>
+            <p className="text-red-500">{errors.email.message}</p>
           )}
 
           <InputField
@@ -75,14 +82,22 @@ const Signup = () => {
             className="border-white focus:border-white focus:ring focus:ring-white"
             {...register("password", {
               required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters long",
+              },
             })}
           />
           {errors.password && (
-            <p className="text-red-600">{errors.password.message}</p>
+            <p className="text-red-500">{errors.password.message}</p>
           )}
 
-          <Button type="submit" className="text-white mt-4 w-full">
-            Create account
+          <Button type="submit" className="text-white mt-4 w-full relative">
+            {loading ? (
+              <span className="loading loading-spinner loading-sm absolute left-1/2 transform -translate-x-1/2"></span>
+            ) : (
+              "Create your Account"
+            )}
           </Button>
         </form>
       </div>

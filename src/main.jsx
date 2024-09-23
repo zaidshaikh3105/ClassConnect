@@ -13,6 +13,7 @@ import EditForm from "./pages/EditForm";
 import Post from "./pages/Post";
 import AllPost from "./pages/AllPost";
 import Login from "./pages/Login.jsx";
+import LandingPage from "./Pages/LandingPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +21,12 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/",
+        path: "/home",
         element: <Home />,
+      },
+      {
+        path: "/",
+        element: <LandingPage />,
       },
       {
         path: "/login",

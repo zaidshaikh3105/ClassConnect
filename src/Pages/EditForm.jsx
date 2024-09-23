@@ -16,7 +16,7 @@ function EditForm() {
         }
       });
     } else {
-      navigate("/");
+      navigate("/home");
     }
   }, [slug, navigate]);
 
