@@ -8,18 +8,20 @@ const NotesCard = ({ $id, title, image }) => {
       to={`/post/${$id}`}
       className="hover:scale-105 transition-transform duration-300"
     >
-      <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <figure className="relative">
+      <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full w-80 h-80 ">
+        <figure className="h-auto w-full">
           <img
             src={service.getFilePreview(image)}
             alt={title}
-            className="object-cover w-full h-48 rounded-t-lg"
+            // className="object-cover h-full w-full rounded-t-lg"
           />
         </figure>
-        <div className="card-body">
-          <h2 className="card-title text-lg font-bold">{title}</h2>
+        <div className="card-body flex-grow flex flex-col justify-between">
+          <h2 className="card-title text-lg font-bold  text-white">{title}</h2>
           <div className="card-actions justify-end">
-            <button className="btn btn-primary">View Post</button>
+            <button className="btn btn-outline text-white border-white hover:bg-white hover:text-black focus:ring focus:ring-white">
+              View Post
+            </button>
           </div>
         </div>
       </div>

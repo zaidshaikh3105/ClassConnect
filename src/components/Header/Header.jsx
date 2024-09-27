@@ -42,7 +42,7 @@ function Header() {
         <div className="flex-1">
           <h1
             className="text-4xl text-white font-semibold transition-transform duration-300 hover:scale-105 cursor-pointer"
-            //onClick={() => navigate("/")}
+            onClick={() => navigate("/")}
           >
             Class Connect
           </h1>

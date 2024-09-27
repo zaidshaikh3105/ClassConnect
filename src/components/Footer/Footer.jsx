@@ -31,7 +31,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="footer bg-neutral text-neutral-content p-3 flex flex-col md:flex-row items-center justify-between">
+    <footer className="footer  text-neutral-content p-3 flex flex-col md:flex-row items-center justify-between">
       <p className="text-white">Made with 🤍</p>
       <nav className="flex gap-4 mt-2 md:mt-0">
         {socialIcons.map((social) => (

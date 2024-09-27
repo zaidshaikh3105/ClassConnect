@@ -33,7 +33,7 @@ export default function Post() {
   };
 
   return note ? (
-    <div className="py-8 bg-base-200">
+    <div className="py-8 bg-base-100">
       <Container>
         <div className="w-full flex flex-col md:flex-row justify-center items-center mb-8 relative border border-base-300 rounded-xl p-6 bg-base-100 shadow-md">
           <img

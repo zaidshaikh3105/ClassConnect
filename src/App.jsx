@@ -40,9 +40,7 @@ function App() {
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow">
         <Header />
-        <main className="flex-grow p-2">
-          <Outlet />
-        </main>
+        <Outlet />
       </div>
 
       <Footer className="mt-auto" />
