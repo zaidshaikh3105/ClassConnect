@@ -14,6 +14,7 @@
     "@splinetool/react-spline": "^4.0.0",
     "@splinetool/runtime": "^1.9.28",
     "@tinymce/tinymce-react": "^5.1.1",
+    "aos": "^2.3.4",
     "appwrite": "^15.0.0",
     "dotenv": "^16.4.5",
     "html-react-parser": "^5.1.16",
