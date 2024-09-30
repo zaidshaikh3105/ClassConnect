@@ -41,7 +41,7 @@ export default function Post() {
         const status = await service.deleteNotes(note.$id);
         if (status) {
           await service.deleteFile(note.image);
-          navigate("/");
+          navigate("/home");
         }
       } catch (err) {
         setError("Failed to delete the note. Please try again later.");

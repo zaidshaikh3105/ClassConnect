@@ -4,26 +4,25 @@ import { useNavigate } from "react-router-dom";
 
 export default function Protected({ children, authentication = true }) {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true); // Renamed loader to isLoading for clarity
-  const authStatus = useSelector((state) => !!state.auth.status); // Ensure it's a boolean
+  const [isLoading, setIsLoading] = useState(true);
+  const authStatus = useSelector((state) => !!state.auth.status);
 
   useEffect(() => {
-    if (authStatus === undefined) return; // Wait for authStatus
+    if (authStatus === undefined) return;
 
     if (authentication) {
       if (authStatus !== true) {
         navigate("/login");
       } else {
-        setIsLoading(false); // Only stop loading if the user is authenticated
+        setIsLoading(false);
       }
     } else {
       if (authStatus === true) {
         navigate("/home");
       } else {
-        setIsLoading(false); // Only stop loading if the user is not authenticated
+        setIsLoading(false);
       }
     }
   }, [authStatus, navigate, authentication]);
-  // Display loading screen or protected content
   return isLoading ? <h1>Loading...</h1> : <>{children}</>;
 }
