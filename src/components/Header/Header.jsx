@@ -11,27 +11,27 @@ function Header() {
   const navItems = [
     {
       name: "Home",
-      slug: "/home",
+      path: "/home",
       active: authStatus,
     },
     {
       name: "Login",
-      slug: "/login",
+      path: "/login",
       active: !authStatus,
     },
     {
       name: "Signup",
-      slug: "/signup",
+      path: "/signup",
       active: !authStatus,
     },
     {
-      name: "All Posts",
-      slug: "/all-posts",
+      name: "All Notes",
+      path: "/all-posts",
       active: authStatus,
     },
     {
-      name: "Add Post",
-      slug: "/add-post",
+      name: "Add Notes",
+      path: "/add-post",
       active: authStatus,
     },
   ];
@@ -54,9 +54,9 @@ function Header() {
                 <li key={item.name}>
                   <button
                     className={`btn btn-ghost text-white ${
-                      location.pathname === item.slug ? "btn-active" : ""
+                      location.pathname === item.path ? "btn-active" : ""
                     }`}
-                    onClick={() => navigate(item.slug)}
+                    onClick={() => navigate(item.path)}
                   >
                     {item.name}
                   </button>

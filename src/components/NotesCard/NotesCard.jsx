@@ -20,7 +20,7 @@ const NotesCard = ({ $id, title, image }) => {
           <h2 className="card-title text-lg font-bold  text-white">{title}</h2>
           <div className="card-actions justify-end">
             <button className="btn btn-outline text-white border-white hover:bg-white hover:text-black focus:ring focus:ring-white">
-              View Post
+              View Notes
             </button>
           </div>
         </div>

@@ -94,7 +94,7 @@ export default function PostNote({ post }) {
             label="Title:"
             placeholder="Title"
             className="mb-4 input input-bordered text-white border-white focus:border-white focus:ring-white"
-            {...register("title", { required: true })}
+            {...register("title", { required: "title is Required" })}
           />
           <InputField
             label="Slug:"
@@ -106,6 +106,7 @@ export default function PostNote({ post }) {
                 shouldValidate: true,
               });
             }}
+            disabled
           />
           <RTE
             label="Content:"
