@@ -17,16 +17,16 @@ export class Service {
 
   async createNotes({ slug, content, image, title, status, userId }) {
     try {
-      // Ensure that all required fields are passed and valid
+      // Validate inputs
       if (!slug || !title || !content || !userId) {
         throw new Error("Missing required fields");
       }
 
-      // Create document in the specified collection
+      // Create document
       const document = await this.databases.createDocument(
-        conf.appwriteDb_Id, // Database ID
-        conf.appwriteCollectionId, // Collection ID
-        slug, // Document ID (unique)
+        conf.appwriteDb_Id,
+        conf.appwriteCollectionId,
+        slug,
         {
           title,
           content,
@@ -36,12 +36,19 @@ export class Service {
         }
       );
 
-      return document; // Return created document
+      return {
+        success: true,
+        data: document,
+      };
     } catch (error) {
       console.error(
         "Appwrite service :: createNotes :: error",
         error.message || error
       );
+      return {
+        success: false,
+        error: error.message || "Failed to create note",
+      };
     }
   }
 
