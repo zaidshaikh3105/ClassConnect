@@ -12,7 +12,7 @@ import Signup from "./Pages/Signup.jsx";
 import EditForm from "./Pages/EditForm.jsx";
 import Post from "./Pages/Post.jsx";
 import AllPost from "./Pages/AllPost.jsx";
-import Login from "./pages/Login.jsx";
+import Login from "./Pages/Login.jsx";
 import LandingPage from "./Pages/LandingPage.jsx";
 
 const router = createBrowserRouter([
