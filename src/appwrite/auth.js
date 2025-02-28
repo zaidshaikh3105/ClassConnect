@@ -42,7 +42,7 @@ export class AuthService {
         email,
         password
       );
-      console.log("Login successful:", session);
+      console.log("Login successful:");
       return session;
     } catch (error) {
       // Log the entire error object
