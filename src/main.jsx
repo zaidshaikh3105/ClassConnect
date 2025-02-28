@@ -7,11 +7,11 @@ import Home from "./Pages/Home.jsx";
 import store from "./store/store.js";
 import { AuthLayout } from "./components/index.js";
 
-import AddPost from "./pages/AddPost";
-import Signup from "./pages/Signup";
-import EditForm from "./pages/EditForm";
-import Post from "./pages/Post";
-import AllPost from "./pages/AllPost";
+import AddPost from "./Pages/AddPost.jsx";
+import Signup from "./Pages/Signup.jsx";
+import EditForm from "./Pages/EditForm.jsx";
+import Post from "./Pages/Post.jsx";
+import AllPost from "./Pages/AllPost.jsx";
 import Login from "./pages/Login.jsx";
 import LandingPage from "./Pages/LandingPage.jsx";
 
